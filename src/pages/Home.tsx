@@ -6,7 +6,7 @@ import { Search, Sparkles, Star, Users, Zap, Award, CheckCircle } from 'lucide-r
 import { motion, useMotionValue, useTransform } from 'motion/react';
 import { APP_LOGO } from '../lib/constants';
 
-const CATEGORIES = ['Design', 'Coding', 'Cuisine', 'Darija', 'Marketing', 'Photo', 'Musique', 'Soft Skills'];
+const CATEGORIES = ['Design', 'Coding', 'Crochets', 'Darija', 'Marketing', 'Photo', 'Musique', 'Soft Skills'];
 
 // Counter Component for animated numbers
 function AnimatedCounter({ value, duration = 2 }: { value: number; duration?: number }) {
@@ -83,12 +83,12 @@ const MOROCCAN_MOCK_DATA = [
   },
   {
     id: 'mock-3',
-    title: 'L\'Art du Tajine Parfait',
-    description: 'Des épices à la cuisson lente. Impressionnez vos camarades lors des rassemblements HESTIM.',
-    category: 'Cuisine',
-    rating: 4.8,
-    trainerName: 'Chef Youssef',
-    imageUrl: 'https://images.unsplash.com/photo-1541518763669-27fef04b14ea?auto=format&fit=crop&q=80&w=400&h=300',
+    title: 'Crochets pour Débutants',
+    description: 'Apprenez l\'art du crochet avec des projets amusants et faciles. Créez vos propres accessoires et cadeaux.',
+    category: 'Crochets',
+    rating: 4.9,
+    trainerName: 'Yasmine Bennani',
+    imageUrl: 'https://images.unsplash.com/photo-1624112684612-b00fa00294fe?auto=format&fit=crop&q=80&w=400&h=300',
     createdAt: new Date().toISOString()
   },
   {
@@ -267,7 +267,7 @@ const Home = () => {
 
                 {/* Content */}
                 <h3 className="text-3xl font-black text-text-main mb-3">Compétences</h3>
-                <p className="text-text-muted text-lg leading-relaxed">Une variété infinie de domaines à explorer, du coding à la cuisine en passant par le design</p>
+                <p className="text-text-muted text-lg leading-relaxed">Une variété infinie de domaines à explorer, du coding aux crochets en passant par le design</p>
 
                 {/* Accent line */}
                 <div className="mt-6 h-1 w-12 bg-pink-500 rounded-full"></div>

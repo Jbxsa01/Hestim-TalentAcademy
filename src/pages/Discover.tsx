@@ -33,15 +33,15 @@ const MOCK_TALENTS = [
   },
   {
     id: 'talent-3',
-    title: 'L\'Art du Tajine Parfait',
-    description: 'Des épices à la cuisson lente. Secrets des chefs marocains pour impressionner lors des événements HESTIM.',
-    category: 'Cuisine',
-    imageUrl: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&q=80&w=400&h=300',
-    rating: 4.8,
-    reviewCount: 312,
+    title: 'Crochets pour Débutants',
+    description: 'Apprenez l\'art du crochet avec des projets amusants et faciles. Techniques de base et patterns populaires.',
+    category: 'Crochets',
+    imageUrl: 'https://images.unsplash.com/photo-1624112684612-b00fa00294fe?auto=format&fit=crop&q=80&w=400&h=300',
+    rating: 4.9,
+    reviewCount: 156,
     trainerId: 'trainer-3',
-    trainerName: 'Chef Youssef',
-    skills: ['Cuisine', 'Épices', 'Tradition']
+    trainerName: 'Yasmine Bennani',
+    skills: ['Crochet', 'Créativité', 'Couture']
   },
   {
     id: 'talent-4',
@@ -176,7 +176,7 @@ const MOCK_OFFERS = [
   }
 ];
 
-const CATEGORIES = ['All', 'Design', 'Coding', 'Cuisine', 'Darija', 'Marketing', 'Photo', 'Musique', 'Soft Skills'];
+const CATEGORIES = ['All', 'Design', 'Coding', 'Crochets', 'Darija', 'Marketing', 'Photo', 'Musique', 'Soft Skills'];
 
 const ITEMS_PER_PAGE = 10;
 
