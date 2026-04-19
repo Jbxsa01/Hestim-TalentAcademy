@@ -1,0 +1,116 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile information with role-based access",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "displayName": { "type": "string" },
+        "photoURL": { "type": "string" },
+        "roles": { "type": "array", "items": { "type": "string", "enum": ["learner", "trainer", "admin"] } },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "email", "roles"]
+    },
+    "Talent": {
+      "title": "Talent",
+      "description": "A talent service offered by a trainer",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "trainerId": { "type": "string" },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "category": { "type": "string" },
+        "imageUrl": { "type": "string" },
+        "rating": { "type": "number" },
+        "reviewCount": { "type": "number" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["trainerId", "title", "description", "category"]
+    },
+    "Offer": {
+      "title": "Offer",
+      "description": "A specific package within a talent (max 4 per talent)",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "talentId": { "type": "string" },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "duration": { "type": "string" },
+        "price": { "type": "number", "default": 120 },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["talentId", "title", "price"]
+    },
+    "Transaction": {
+      "title": "Transaction",
+      "description": "Records of purchases between learners and trainers",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "learnerId": { "type": "string" },
+        "trainerId": { "type": "string" },
+        "offerId": { "type": "string" },
+        "amount": { "type": "number" },
+        "commission": { "type": "number" },
+        "status": { "type": "string", "enum": ["pending", "completed", "failed"] },
+        "stripePaymentIntentId": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["learnerId", "trainerId", "offerId", "amount", "status"]
+    },
+    "Chat": {
+      "title": "Chat",
+      "description": "A communication channel unlocked after purchase",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "participants": { "type": "array", "items": { "type": "string" } },
+        "offerId": { "type": "string" },
+        "lastMessage": { "type": "string" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["participants", "offerId"]
+    },
+    "Message": {
+      "title": "Message",
+      "description": "Individual chat messages",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "chatId": { "type": "string" },
+        "senderId": { "type": "string" },
+        "text": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["chatId", "senderId", "text"]
+    },
+    "Review": {
+      "title": "Review",
+      "description": "User reviews for talents",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "talentId": { "type": "string" },
+        "learnerId": { "type": "string" },
+        "rating": { "type": "number" },
+        "comment": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["talentId", "learnerId", "rating"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": { "schema": "User", "description": "User profiles" },
+    "/talents/{talentId}": { "schema": "Talent", "description": "Talent listings" },
+    "/talents/{talentId}/offers/{offerId}": { "schema": "Offer", "description": "Offers inside a talent" },
+    "/transactions/{transactionId}": { "schema": "Transaction", "description": "Payment transactions" },
+    "/chats/{chatId}": { "schema": "Chat", "description": "Chat metadata" },
+    "/chats/{chatId}/messages/{messageId}": { "schema": "Message", "description": "Chat messages" },
+    "/reviews/{reviewId}": { "schema": "Review", "description": "Talent reviews" }
+  }
+}
