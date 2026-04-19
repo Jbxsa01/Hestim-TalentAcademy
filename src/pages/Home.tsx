@@ -201,7 +201,7 @@ const Home = () => {
               transition={{ delay: 0.2 }}
               className="relative hidden lg:block"
             >
-              <img src="/src/img/4099329.jpg" alt="Creative talents" className="w-full rounded-3xl shadow-lg" />
+              <img src="/img/4099329.jpg" alt="Creative talents" className="w-full rounded-3xl shadow-lg" />
             </motion.div>
           </div>
         </div>
@@ -317,7 +317,7 @@ const Home = () => {
               whileInView={{ opacity: 1, x: 0 }}
               className="order-2 lg:order-1"
             >
-              <img src="/src/img/Wavy_Ppl-05_Single-12.jpg" alt="Team collaboration" className="w-full rounded-3xl" />
+              <img src="/img/Wavy_Ppl-05_Single-12.jpg" alt="Team collaboration" className="w-full rounded-3xl" />
             </motion.div>
 
             {/* Right - Content */}
@@ -506,7 +506,7 @@ const Home = () => {
             {/* Brand Section */}
             <div className="col-span-1">
               <div className="mb-6">
-                <img src="/src/img/Gemini_Generated_Image_xal8eexal8eexal8-removebg-preview.png" alt="HESTIM Logo" className="h-12 w-auto object-contain" />
+                <img src="/img/Gemini_Generated_Image_xal8eexal8eexal8-removebg-preview.png" alt="HESTIM Logo" className="h-12 w-auto object-contain" />
               </div>
               <p className="text-text-muted text-sm leading-relaxed mb-6">
                 Plateforme d'échange de talents pour la communauté HESTIM. Partagez vos compétences et apprenez ensemble.

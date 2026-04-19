@@ -1,4 +1,4 @@
-export const APP_LOGO = '/src/img/logo.png';
+export const APP_LOGO = '/img/logo.png';
 export const HESTIM_DOMAIN = 'HESTIM.ma';
 export const CATEGORIES = ['Design', 'Coding', 'Cuisine', 'Darija', 'Marketing', 'Photography', 'Music', 'Soft Skills'];
 
