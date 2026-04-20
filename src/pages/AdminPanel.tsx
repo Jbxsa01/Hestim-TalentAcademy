@@ -141,7 +141,7 @@ const AdminPanel = () => {
     
     setLoading(true);
     try {
-      const response = await fetch('/api/seed-50talents', {
+      const response = await fetch('http://localhost:3001/api/seed-50talents', {
         method: 'POST',
       });
       
@@ -172,7 +172,7 @@ const AdminPanel = () => {
     
     setLoading(true);
     try {
-      const response = await fetch('/api/seed-talents', {
+      const response = await fetch('http://localhost:3001/api/seed-talents', {
         method: 'POST',
       });
       
