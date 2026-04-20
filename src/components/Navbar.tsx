@@ -89,16 +89,30 @@ const Navbar = () => {
                     <img
                       src={user.photoURL || `https://ui-avatars.com/api/?name=${user.displayName}`}
                       alt="Profile"
-                      className="w-10 h-10 rounded-xl border-2 border-border-subtle group-hover:border-primary transition-all cursor-pointer"
+                      className="w-10 h-10 rounded-lg border-2 border-primary group-hover:border-accent transition-all cursor-pointer"
                       referrerPolicy="no-referrer"
                     />
-                    <div className="absolute top-12 right-0 w-48 bg-white border border-border-subtle rounded-2xl shadow-xl p-2 hidden group-hover:block transition-all transform origin-top-right scale-95 group-hover:scale-100 duration-200">
+                    <div className="absolute top-12 right-0 w-56 bg-white border border-border-subtle rounded-xl shadow-xl p-3 hidden group-hover:block transition-all transform origin-top-right scale-95 group-hover:scale-100 duration-200 z-50">
+                      {/* User Info */}
+                      <div className="px-4 py-3 border-b border-border-subtle mb-2">
+                        <p className="text-xs font-bold text-text-muted uppercase tracking-wider">Connecté en tant que</p>
+                        <p className="text-sm font-bold text-text-main mt-1 truncate">{user.displayName || user.email}</p>
+                      </div>
+                      
+                      {/* Menu Items */}
+                      <Link
+                        to="/profile"
+                        className="w-full text-left px-4 py-2.5 text-text-main hover:bg-primary/5 hover:text-primary rounded-lg transition-all flex items-center space-x-3 font-medium text-sm"
+                      >
+                        <UserIcon className="w-4 h-4 flex-shrink-0" />
+                        <span>Mon Profil</span>
+                      </Link>
                       <button
                         onClick={handleLogout}
-                        className="w-full text-left px-4 py-3 text-text-muted hover:text-danger hover:bg-red-50 rounded-xl transition-all flex items-center space-x-3"
+                        className="w-full text-left px-4 py-2.5 text-red-600 hover:bg-red-50 rounded-lg transition-all flex items-center space-x-3 font-medium text-sm"
                       >
-                        <LogOut className="w-4 h-4" />
-                        <span className="text-xs font-black uppercase tracking-widest">Déconnexion</span>
+                        <LogOut className="w-4 h-4 flex-shrink-0" />
+                        <span>Déconnexion</span>
                       </button>
                     </div>
                   </div>
