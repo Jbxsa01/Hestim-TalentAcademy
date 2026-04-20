@@ -11,83 +11,163 @@ import FollowTalentButton from '../components/FollowTalentButton';
 const MOCK_TALENTS = [
   {
     id: 'talent-1',
-    title: 'Design Moderne & Zellige UI',
-    description: 'Apprenez à fusionner les motifs traditionnels Zellige avec le design UI moderne pour vos projets Web.',
-    category: 'Design',
-    imageUrl: '/img/idees-idee-vision-conception-plan-objectif-mission-concept_53876-167112.avif',
-    rating: 4.9,
+    title: 'Musique / Chant',
+    description: 'Cours de musique et de chant professionnel avec des techniques reconnues mondialement.',
+    category: 'Music',
+    imageUrl: 'https://images.unsplash.com/photo-1511379938547-c1f69b13d835?w=500',
+    rating: 5.0,
     reviewCount: 247,
     trainerId: 'trainer-1',
-    trainerName: 'Anas El Alami',
-    isActive: false
+    trainerName: 'Ahmed Zaki',
+    isActive: true,
+    offers: [
+      { id: 'offer-1-1', title: 'Cours solo', description: 'Leçons de chant en tête-à-tête', duration: '4 semaines', price: 120 }
+    ]
+  },
+  {
+    id: 'talent-2',
+    title: 'Arts visuels',
+    description: 'Dessin, peinture et art numérique - Apprenez à exprimer votre créativité.',
+    category: 'Design',
+    imageUrl: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=500',
+    rating: 4.9,
+    reviewCount: 156,
+    trainerId: 'trainer-2',
+    trainerName: 'Leila Bennani',
+    isActive: true,
+    offers: [
+      { id: 'offer-2-1', title: 'Dessin débutant', description: 'Initiation au dessin', duration: '4 semaines', price: 120 },
+      { id: 'offer-2-2', title: 'Peinture', description: 'Techniques de peinture', duration: '6 semaines', price: 120 },
+      { id: 'offer-2-3', title: 'Digital art', description: 'Art numérique et design graphique', duration: '5 semaines', price: 120 },
+      { id: 'offer-2-4', title: 'Portfolio', description: 'Création de portfolio professionnel', duration: '3 semaines', price: 120 }
+    ]
   },
   {
     id: 'talent-3',
-    title: 'Crochets pour Débutants',
-    description: 'Apprenez l\'art du crochet avec des projets amusants et faciles. Techniques de base et patterns populaires.',
-    category: 'Crochets',
-    imageUrl: '/img/2048.webp',
-    rating: 4.9,
-    reviewCount: 156,
+    title: 'Programmation',
+    description: 'Développement web et applications mobiles - De zéro à expert.',
+    category: 'Coding',
+    imageUrl: 'https://images.unsplash.com/photo-1633356122544-f134324ef6db?w=500',
+    rating: 5.0,
+    reviewCount: 428,
     trainerId: 'trainer-3',
-    trainerName: 'Yasmine Bennani',
-    isActive: false
+    trainerName: 'Mehdi Choukri',
+    isActive: true,
+    offers: [
+      { id: 'offer-3-1', title: 'Intro Python', description: 'Introduction à Python', duration: '4 semaines', price: 120 },
+      { id: 'offer-3-2', title: 'Web', description: 'Développement web - HTML, CSS, JavaScript', duration: '6 semaines', price: 120 },
+      { id: 'offer-3-3', title: 'App mobile', description: 'Développement d\'applications mobiles', duration: '8 semaines', price: 120 },
+      { id: 'offer-3-4', title: 'Projet guide', description: 'Réalisation de projets complets guidés', duration: '7 semaines', price: 120 }
+    ]
   },
   {
     id: 'talent-4',
-    title: 'Développement Full Stack HESTIM',
-    description: 'Bâtissez des apps scalables. Sessions pratiques de l\'architecture au déploiement avec technologies modernes.',
-    category: 'Coding',
-    imageUrl: 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&q=80&w=400&h=300',
-    rating: 4.7,
-    reviewCount: 428,
+    title: 'Photographie',
+    description: 'Photographie professionnelle et édition - Capturez la beauté du monde.',
+    category: 'Photography',
+    imageUrl: 'https://images.unsplash.com/photo-1502920917128-1aa500764cbd?w=500',
+    rating: 4.9,
+    reviewCount: 156,
     trainerId: 'trainer-4',
-    trainerName: 'Mehdi Choukri',
-    isActive: false
+    trainerName: 'Hassan Bennani',
+    isActive: true,
+    offers: [
+      { id: 'offer-4-1', title: 'Prise de vue', description: 'Techniques de photographie', duration: '4 semaines', price: 120 },
+      { id: 'offer-4-2', title: 'Retouche', description: 'Édition et retouche photo', duration: '5 semaines', price: 120 },
+      { id: 'offer-4-3', title: 'Sortie terrain', description: 'Photographie en extérieur', duration: '3 semaines', price: 120 },
+      { id: 'offer-4-4', title: 'Exposition', description: 'Préparation d\'expositions photo', duration: '4 semaines', price: 120 }
+    ]
   },
   {
     id: 'talent-5',
-    title: 'Photography Pro: Moments aux Paysages',
-    description: 'Capturez la beauté des paysages marocains et des moments authentiques. Technique professionnelle et post-production.',
-    category: 'Photo',
-    imageUrl: 'https://images.unsplash.com/photo-1502920917128-1aa500764cbd?auto=format&fit=crop&q=80&w=400&h=300',
-    rating: 4.9,
-    reviewCount: 156,
+    title: 'Langues',
+    description: 'Apprentissage de langues - Arabe, Anglais, Français et plus.',
+    category: 'Soft Skills',
+    imageUrl: 'https://images.unsplash.com/photo-1543269865-cbdf26cecb46?w=500',
+    rating: 4.8,
+    reviewCount: 278,
     trainerId: 'trainer-5',
-    trainerName: 'Khalid Younes',
-    isActive: false
+    trainerName: 'Fatima Zohra',
+    isActive: true,
+    offers: [
+      { id: 'offer-5-1', title: 'Conversation', description: 'Pratique de la conversation', duration: '6 semaines', price: 120 },
+      { id: 'offer-5-2', title: 'Grammaire', description: 'Grammaire et structures linguistiques', duration: '5 semaines', price: 120 },
+      { id: 'offer-5-3', title: 'Preparation examen', description: 'Préparation aux examens officiels', duration: '8 semaines', price: 120 },
+      { id: 'offer-5-4', title: 'Echange DIALECT ARABE ANGALIS FRANCAIS', description: 'Échange de dialecte arabe, anglais et français', duration: '6 semaines', price: 120 }
+    ]
   },
   {
     id: 'talent-6',
-    title: 'Digital Marketing: Growth Hacking',
-    description: 'Stratégies éprouvées pour croître sur Instagram, TikTok et LinkedIn. Cas d\'études de startups marocaines.',
-    category: 'Marketing',
-    imageUrl: 'https://images.unsplash.com/photo-1460925895917-adf4e565016a?auto=format&fit=crop&q=80&w=400&h=300',
-    rating: 4.6,
-    reviewCount: 278,
+    title: 'Jeux stratégiques',
+    description: 'Échecs, jeux de stratégie et coaching - Développez votre esprit stratégique.',
+    category: 'Soft Skills',
+    imageUrl: 'https://images.unsplash.com/photo-1611003228941-98852ba62227?w=500',
+    rating: 4.9,
+    reviewCount: 189,
     trainerId: 'trainer-6',
-    trainerName: 'Lina Riad',
-    isActive: false
+    trainerName: 'Karim El Kasmi',
+    isActive: true,
+    offers: [
+      { id: 'offer-6-1', title: 'Initiation', description: 'Initiation aux jeux stratégiques', duration: '4 semaines', price: 120 },
+      { id: 'offer-6-2', title: 'Tournoi', description: 'Préparation aux tournois', duration: '6 semaines', price: 120 },
+      { id: 'offer-6-3', title: 'Coaching', description: 'Coaching personnalisé', duration: '8 semaines', price: 120 },
+      { id: 'offer-6-4', title: 'Analyse de partie', description: 'Analyse et stratégies avancées', duration: '5 semaines', price: 120 }
+    ]
+  },
+  {
+    id: 'talent-7',
+    title: 'Sport / Fitness',
+    description: 'Entraînement sportif et fitness - Transformez votre corps et esprit.',
+    category: 'Soft Skills',
+    imageUrl: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=500',
+    rating: 5.0,
+    reviewCount: 312,
+    trainerId: 'trainer-7',
+    trainerName: 'Youssef Hamid',
+    isActive: true,
+    offers: [
+      { id: 'offer-7-1', title: 'Coaching personnalisé', description: 'Entraînement adapté à vos objectifs', duration: '8 semaines', price: 120 },
+      { id: 'offer-7-2', title: 'Plan d\'entraînement', description: 'Création de plans d\'entraînement', duration: '4 semaines', price: 120 },
+      { id: 'offer-7-3', title: 'Bootcamp', description: 'Bootcamp intensif de fitness', duration: '6 semaines', price: 120 }
+    ]
+  },
+  {
+    id: 'talent-8',
+    title: 'Crochet',
+    description: 'Art du crochet et travaux manuels - Créez de magnifiques projets.',
+    category: 'Crochets',
+    imageUrl: 'https://images.unsplash.com/photo-1578926078328-123456789012?w=500',
+    rating: 4.8,
+    reviewCount: 143,
+    trainerId: 'trainer-8',
+    trainerName: 'Nadia Sami',
+    isActive: true,
+    offers: [
+      { id: 'offer-8-1', title: 'Cours de base', description: 'Les bases du crochet', duration: '4 semaines', price: 120 },
+      { id: 'offer-8-2', title: 'Apprentissage en groupe', description: 'Apprentissage en groupe convivial', duration: '6 semaines', price: 120 },
+      { id: 'offer-8-3', title: 'Atelier', description: 'Ateliers créatifs et projets', duration: '5 semaines', price: 120 },
+      { id: 'offer-8-4', title: 'Cours accéléré', description: 'Cours intensif et accéléré', duration: '3 semaines', price: 120 }
+    ]
   }
 ];
 
 const MOCK_OFFERS = [
   {
-    id: 'offer-1',
+    id: 'offer-default-1',
     title: 'Starter Package',
     description: 'Commencez votre apprentissage avec les bases essentielles.',
     price: 120,
     duration: '4 semaines',
   },
   {
-    id: 'offer-2',
+    id: 'offer-default-2',
     title: 'Professional Pack',
     description: 'Package professionnel avec mentorat personnalisé et projets concrets.',
     price: 120,
     duration: '8 semaines',
   },
   {
-    id: 'offer-3',
+    id: 'offer-default-3',
     title: 'Master Program',
     description: 'Programme complet avec certification et accès à la communauté.',
     price: 120,
@@ -118,7 +198,7 @@ const TalentDetail = () => {
           const mockTalent = MOCK_TALENTS.find(t => t.id === id);
           if (mockTalent) {
             setTalent(mockTalent);
-            setOffers(MOCK_OFFERS);
+            setOffers(mockTalent.offers || MOCK_OFFERS);
           }
         }
       } catch (err) {
@@ -127,7 +207,7 @@ const TalentDetail = () => {
         const mockTalent = MOCK_TALENTS.find(t => t.id === id);
         if (mockTalent) {
           setTalent(mockTalent);
-          setOffers(MOCK_OFFERS);
+          setOffers(mockTalent.offers || MOCK_OFFERS);
         }
       } finally {
         setLoading(false);

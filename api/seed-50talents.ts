@@ -14,12 +14,17 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-const categories = ['Design', 'Coding', 'Marketing', 'Photo', 'Musique', 'Soft Skills', 'Business', 'Crochets'];
-const skills = [
-  'Fundamentals', 'Intermediate', 'Advanced', 'Mastery', 'Professional',
-  'Basics', 'Techniques', 'Strategies', 'Best Practices', 'Industry Insights',
-  'Deep Dive', 'Practical Applications', 'Real-World Projects', 'Expert Tips', 'Certification Prep'
-];
+const categories = ['Music', 'Design', 'Coding', 'Photography', 'Soft Skills', 'Crochets'];
+
+// Offres spécifiques par catégorie selon le tableau
+const offersByCategory: { [key: string]: string[] } = {
+  'Music': ['Cours solo'],
+  'Design': ['Dessin débutant', 'Peinture', 'Digital art', 'Portfolio'],
+  'Coding': ['Intro Python', 'Web', 'App mobile', 'Projet guide'],
+  'Photography': ['Prise de vue', 'Retouche', 'Sortie terrain', 'Exposition'],
+  'Soft Skills': ['Conversation', 'Grammaire', 'Preparation examen', 'Echange', 'Initiation', 'Tournoi', 'Coaching', 'Coaching personnalisé', 'Plan d\'entraînement', 'Bootcamp'],
+  'Crochets': ['Cours de base', 'Apprentissage en groupe', 'Atelier', 'Cours accéléré']
+};
 
 const trainers = [
   { name: 'Anas El Alami' },
@@ -63,17 +68,17 @@ function generateTalent(index: number) {
   };
 }
 
-function generateOffers(talentIndex: number): any[] {
+function generateOffers(talentIndex: number, category: string): any[] {
   const offers = [];
-  const skillCount = 8 + Math.floor(Math.random() * 4); // 8-12 offres par talent
+  const categoryOffers = offersByCategory[category] || [];
   
-  for (let i = 0; i < skillCount; i++) {
-    const skill = skills[i % skills.length];
-    const duration = [2, 3, 4, 5, 6, 8, 10, 12][Math.floor(Math.random() * 8)];
+  // Utiliser les offres spécifiques de la catégorie
+  for (let i = 0; i < categoryOffers.length; i++) {
+    const duration = [2, 3, 4, 5, 6, 8, 10, 12][i % 8];
     
     offers.push({
-      title: `${skill} - Level ${i + 1}`,
-      description: `Master the ${skill.toLowerCase()} techniques step by step. Perfect for professionals seeking excellence.`,
+      title: categoryOffers[i],
+      description: `${categoryOffers[i]} - cours professionnel de ${category.toLowerCase()}`,
       duration: `${duration} semaines`,
       price: 120,
       createdAt: new Date().toISOString(),
@@ -103,7 +108,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       talentCount++;
       
       // Générer et ajouter les offres pour ce talent
-      const offers = generateOffers(t);
+      const offers = generateOffers(t, talentData.category);
       
       for (const offer of offers) {
         await addDoc(collection(db, 'talents', talentRef.id, 'offers'), offer);

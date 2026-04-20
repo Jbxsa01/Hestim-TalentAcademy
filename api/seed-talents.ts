@@ -16,57 +16,60 @@ const db = getFirestore(app);
 
 const sampleTalents = [
   {
-    title: 'Master UI Design Marocaine',
-    description: 'Design moderne avec influences Zellige et architecture marocaine',
-    category: 'Design',
-    imageUrl: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=500',
+    title: 'Musique / Chant',
+    description: 'Cours de musique et de chant professionnel',
+    category: 'Music',
+    imageUrl: 'https://images.unsplash.com/photo-1511379938547-c1f69b13d835?w=500',
     trainerId: 'trainer-1',
-    trainerName: 'Anas El Alami',
+    trainerName: 'Ahmed Zaki',
     rating: 5.0,
     reviewCount: 0,
     followers: 0,
     isActive: true,
     offers: [
-      { title: 'Introduction au Design Marocain', description: 'Découvrez les bases', duration: '4 semaines', price: 120 },
-      { title: 'Design Avancé Zellige', description: 'Techniques avancées', duration: '8 semaines', price: 120 }
+      { title: 'Cours solo', description: 'Leçons de chant en tête-à-tête', duration: '4 semaines', price: 120 }
     ]
   },
   {
-    title: 'Full Stack Development with React',
-    description: 'Apprenez React, Node.js et MongoDB from scratch',
+    title: 'Arts visuels',
+    description: 'Dessin, peinture et art numérique',
+    category: 'Design',
+    imageUrl: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=500',
+    trainerId: 'trainer-2',
+    trainerName: 'Leila Bennani',
+    rating: 4.9,
+    reviewCount: 0,
+    followers: 0,
+    isActive: true,
+    offers: [
+      { title: 'Dessin débutant', description: 'Initiation au dessin', duration: '4 semaines', price: 120 },
+      { title: 'Peinture', description: 'Techniques de peinture', duration: '6 semaines', price: 120 },
+      { title: 'Digital art', description: 'Art numérique et design graphique', duration: '5 semaines', price: 120 },
+      { title: 'Portfolio', description: 'Création de portfolio professionnel', duration: '3 semaines', price: 120 }
+    ]
+  },
+  {
+    title: 'Programmation',
+    description: 'Développement web et applications mobiles',
     category: 'Coding',
     imageUrl: 'https://images.unsplash.com/photo-1633356122544-f134324ef6db?w=500',
-    trainerId: 'trainer-2',
+    trainerId: 'trainer-3',
     trainerName: 'Mehdi Choukri',
     rating: 5.0,
     reviewCount: 0,
     followers: 0,
     isActive: true,
     offers: [
-      { title: 'React Fundamentals', description: 'Concepts de base React', duration: '4 semaines', price: 120 },
-      { title: 'Building Real Projects', description: 'Projets pratiques', duration: '6 semaines', price: 120 }
+      { title: 'Intro Python', description: 'Introduction à Python', duration: '4 semaines', price: 120 },
+      { title: 'Web', description: 'Développement web - HTML, CSS, JavaScript', duration: '6 semaines', price: 120 },
+      { title: 'App mobile', description: 'Développement d\'applications mobiles', duration: '8 semaines', price: 120 },
+      { title: 'Projet guide', description: 'Réalisation de projets complets guidés', duration: '7 semaines', price: 120 }
     ]
   },
   {
-    title: 'Digital Marketing Essentials',
-    description: 'Stratégies marketing numériques modernes',
-    category: 'Marketing',
-    imageUrl: 'https://images.unsplash.com/photo-1460925895917-aeb19be489c7?w=500',
-    trainerId: 'trainer-3',
-    trainerName: 'Fatima Bouchaara',
-    rating: 4.8,
-    reviewCount: 0,
-    followers: 0,
-    isActive: true,
-    offers: [
-      { title: 'Social Media Strategy', description: 'Maîtrisez les réseaux sociaux', duration: '3 semaines', price: 120 },
-      { title: 'SEO & Content Marketing', description: 'Optimisation et contenu', duration: '5 semaines', price: 120 }
-    ]
-  },
-  {
-    title: 'Photography & Videography',
-    description: 'Techniques professionnelles de photo et vidéo',
-    category: 'Photo',
+    title: 'Photographie',
+    description: 'Photographie professionnelle et édition',
+    category: 'Photography',
     imageUrl: 'https://images.unsplash.com/photo-1502920917128-1aa500764cbd?w=500',
     trainerId: 'trainer-4',
     trainerName: 'Hassan Bennani',
@@ -75,8 +78,81 @@ const sampleTalents = [
     followers: 0,
     isActive: true,
     offers: [
-      { title: 'Photography Basics', description: 'Principes fondamentaux', duration: '4 semaines', price: 120 },
-      { title: 'Video Production', description: 'Production vidéo professionnelle', duration: '6 semaines', price: 120 }
+      { title: 'Prise de vue', description: 'Techniques de photographie', duration: '4 semaines', price: 120 },
+      { title: 'Retouche', description: 'Édition et retouche photo', duration: '5 semaines', price: 120 },
+      { title: 'Sortie terrain', description: 'Photographie en extérieur', duration: '3 semaines', price: 120 },
+      { title: 'Exposition', description: 'Préparation d\'expositions photo', duration: '4 semaines', price: 120 }
+    ]
+  },
+  {
+    title: 'Langues',
+    description: 'Apprentissage de langues - Arabe, Anglais, Français',
+    category: 'Soft Skills',
+    imageUrl: 'https://images.unsplash.com/photo-1543269865-cbdf26cecb46?w=500',
+    trainerId: 'trainer-5',
+    trainerName: 'Fatima Zohra',
+    rating: 4.8,
+    reviewCount: 0,
+    followers: 0,
+    isActive: true,
+    offers: [
+      { title: 'Conversation', description: 'Pratique de la conversation', duration: '6 semaines', price: 120 },
+      { title: 'Grammaire', description: 'Grammaire et structures linguistiques', duration: '5 semaines', price: 120 },
+      { title: 'Preparation examen', description: 'Préparation aux examens officiels', duration: '8 semaines', price: 120 },
+      { title: 'Echange DIALECT ARABE ANGALIS FRANCAIS', description: 'Échange de dialecte arabe, anglais et français', duration: '6 semaines', price: 120 }
+    ]
+  },
+  {
+    title: 'Jeux stratégiques',
+    description: 'Échecs, jeux de stratégie et coaching',
+    category: 'Soft Skills',
+    imageUrl: 'https://images.unsplash.com/photo-1611003228941-98852ba62227?w=500',
+    trainerId: 'trainer-6',
+    trainerName: 'Karim El Kasmi',
+    rating: 4.9,
+    reviewCount: 0,
+    followers: 0,
+    isActive: true,
+    offers: [
+      { title: 'Initiation', description: 'Initiation aux jeux stratégiques', duration: '4 semaines', price: 120 },
+      { title: 'Tournoi', description: 'Préparation aux tournois', duration: '6 semaines', price: 120 },
+      { title: 'Coaching', description: 'Coaching personnalisé', duration: '8 semaines', price: 120 },
+      { title: 'Analyse de partie', description: 'Analyse et stratégies avancées', duration: '5 semaines', price: 120 }
+    ]
+  },
+  {
+    title: 'Sport / Fitness',
+    description: 'Entraînement sportif et fitness professionnel',
+    category: 'Soft Skills',
+    imageUrl: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=500',
+    trainerId: 'trainer-7',
+    trainerName: 'Youssef Hamid',
+    rating: 5.0,
+    reviewCount: 0,
+    followers: 0,
+    isActive: true,
+    offers: [
+      { title: 'Coaching personnalisé', description: 'Entraînement adapté à vos objectifs', duration: '8 semaines', price: 120 },
+      { title: 'Plan d\'entraînement', description: 'Création de plans d\'entraînement', duration: '4 semaines', price: 120 },
+      { title: 'Bootcamp', description: 'Bootcamp intensif de fitness', duration: '6 semaines', price: 120 }
+    ]
+  },
+  {
+    title: 'Crochet',
+    description: 'Art du crochet et travaux manuels',
+    category: 'Crochets',
+    imageUrl: 'https://images.unsplash.com/photo-1578926078328-123456789012?w=500',
+    trainerId: 'trainer-8',
+    trainerName: 'Nadia Sami',
+    rating: 4.8,
+    reviewCount: 0,
+    followers: 0,
+    isActive: true,
+    offers: [
+      { title: 'Cours de base', description: 'Les bases du crochet', duration: '4 semaines', price: 120 },
+      { title: 'Apprentissage en groupe', description: 'Apprentissage en groupe convivial', duration: '6 semaines', price: 120 },
+      { title: 'Atelier', description: 'Ateliers créatifs et projets', duration: '5 semaines', price: 120 },
+      { title: 'Cours accéléré', description: 'Cours intensif et accéléré', duration: '3 semaines', price: 120 }
     ]
   }
 ];
