@@ -82,16 +82,12 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
 
     if (!validateForm()) return;
 
-    // Simulate payment processing
     try {
-      // Show success for 2 seconds before processing actual purchase
       setPaymentSuccess(true);
       await new Promise((resolve) => setTimeout(resolve, 1500));
       
-      // Process the actual purchase
       await onConfirm();
       
-      // Reset form after successful purchase
       setFormData({ cardName: '', cardNumber: '', expiryDate: '', cvc: '' });
       setPaymentSuccess(false);
       onClose();
@@ -110,40 +106,40 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="absolute inset-0 bg-black/50 backdrop-blur"
+            className="absolute inset-0 bg-black/40"
           />
 
           {/* Modal */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.9, y: 20 }}
+            initial={{ opacity: 0, scale: 0.95, y: 10 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.9, y: 20 }}
-            transition={{ type: 'spring', damping: 30 }}
-            className="relative bg-white rounded-3xl shadow-2xl max-w-md w-full overflow-hidden"
+            exit={{ opacity: 0, scale: 0.95, y: 10 }}
+            transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+            className="relative bg-white rounded-lg shadow-lg max-w-md w-full overflow-hidden border border-gray-200"
           >
-            {/* Header */}
-            <div className="bg-gradient-to-r from-primary to-indigo-700 px-6 py-8">
+            {/* Header - Simple White */}
+            <div className="border-b border-gray-200 px-6 py-6">
               <div className="flex items-start justify-between mb-4">
                 <div>
-                  <h2 className="text-2xl font-bold text-white mb-1">Paiement Sécurisé</h2>
-                  <p className="text-white/80 text-sm">Complétez votre inscription</p>
+                  <h2 className="text-xl font-semibold text-gray-900">Paiement</h2>
+                  <p className="text-sm text-gray-600 mt-1">Informations de carte bancaire</p>
                 </div>
                 <button
                   onClick={onClose}
                   disabled={isProcessing}
-                  className="text-white/60 hover:text-white transition-colors disabled:opacity-50"
+                  className="text-gray-400 hover:text-gray-600 transition-colors disabled:opacity-50"
                 >
-                  <X className="w-6 h-6" />
+                  <X className="w-5 h-5" />
                 </button>
               </div>
 
-              {/* Order Summary */}
-              <div className="bg-white/10 rounded-xl p-3 text-white text-sm">
-                <p className="font-medium">{talent?.title}</p>
-                <p className="text-white/70 mt-1">{offer?.title}</p>
-                <div className="flex justify-between items-center mt-2 pt-2 border-t border-white/20">
-                  <span className="font-bold">Montant à payer</span>
-                  <span className="text-lg font-black">{offer?.price} DHS</span>
+              {/* Order Summary - Minimal */}
+              <div className="bg-gray-50 rounded p-3 text-sm border border-gray-200">
+                <p className="font-medium text-gray-900">{talent?.title}</p>
+                <p className="text-gray-600 mt-1">{offer?.title}</p>
+                <div className="flex justify-between items-center mt-3 pt-3 border-t border-gray-200">
+                  <span className="text-gray-700">Montant à payer</span>
+                  <span className="text-lg font-semibold text-gray-900">{offer?.price} DHS</span>
                 </div>
               </div>
             </div>
@@ -151,26 +147,26 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
             {/* Form Content */}
             <div className="p-6">
               {!paymentSuccess ? (
-                <form onSubmit={handleSubmit} className="space-y-5">
+                <form onSubmit={handleSubmit} className="space-y-4">
                   {/* Card Holder Name */}
                   <div>
-                    <label className="block text-sm font-bold text-text-main mb-2">
+                    <label className="block text-sm font-medium text-gray-900 mb-1.5">
                       Nom du titulaire
                     </label>
                     <input
                       type="text"
-                      placeholder="Prénom Nom"
+                      placeholder="Jean Dupont"
                       value={formData.cardName}
                       onChange={(e) => setFormData({ ...formData, cardName: e.target.value })}
                       disabled={isProcessing}
-                      className={`w-full px-4 py-3 rounded-xl border-2 transition-all disabled:opacity-50 ${
+                      className={`w-full px-3 py-2 rounded border text-sm transition-colors disabled:opacity-50 disabled:bg-gray-50 ${
                         errors.cardName
-                          ? 'border-red-500 bg-red-50'
-                          : 'border-slate-200 focus:border-primary focus:ring-2 focus:ring-primary/20'
+                          ? 'border-red-500 focus:border-red-500 focus:ring-red-500'
+                          : 'border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500'
                       } focus:outline-none`}
                     />
                     {errors.cardName && (
-                      <p className="text-red-500 text-xs mt-1 flex items-center gap-1">
+                      <p className="text-red-600 text-xs mt-1 flex items-center gap-1">
                         <AlertCircle className="w-3 h-3" />
                         {errors.cardName}
                       </p>
@@ -179,24 +175,24 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
 
                   {/* Card Number */}
                   <div>
-                    <label className="block text-sm font-bold text-text-main mb-2">
+                    <label className="block text-sm font-medium text-gray-900 mb-1.5">
                       Numéro de carte
                     </label>
                     <input
                       type="text"
-                      placeholder="XXXX XXXX XXXX XXXX"
+                      placeholder="4242 4242 4242 4242"
                       value={formData.cardNumber}
                       onChange={handleCardNumberChange}
                       disabled={isProcessing}
                       maxLength="19"
-                      className={`w-full px-4 py-3 rounded-xl border-2 transition-all disabled:opacity-50 font-mono text-lg tracking-widest ${
+                      className={`w-full px-3 py-2 rounded border text-sm transition-colors disabled:opacity-50 disabled:bg-gray-50 font-mono tracking-wider ${
                         errors.cardNumber
-                          ? 'border-red-500 bg-red-50'
-                          : 'border-slate-200 focus:border-primary focus:ring-2 focus:ring-primary/20'
+                          ? 'border-red-500 focus:border-red-500 focus:ring-red-500'
+                          : 'border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500'
                       } focus:outline-none`}
                     />
                     {errors.cardNumber && (
-                      <p className="text-red-500 text-xs mt-1 flex items-center gap-1">
+                      <p className="text-red-600 text-xs mt-1 flex items-center gap-1">
                         <AlertCircle className="w-3 h-3" />
                         {errors.cardNumber}
                       </p>
@@ -204,71 +200,67 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
                   </div>
 
                   {/* Expiry & CVC */}
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-2 gap-3">
                     <div>
-                      <label className="block text-sm font-bold text-text-main mb-2">
+                      <label className="block text-sm font-medium text-gray-900 mb-1.5">
                         Expiration
                       </label>
                       <input
                         type="text"
-                        placeholder="MM/YY"
+                        placeholder="12/25"
                         value={formData.expiryDate}
                         onChange={handleExpiryChange}
                         disabled={isProcessing}
                         maxLength="5"
-                        className={`w-full px-4 py-3 rounded-xl border-2 transition-all disabled:opacity-50 font-mono ${
+                        className={`w-full px-3 py-2 rounded border text-sm transition-colors disabled:opacity-50 disabled:bg-gray-50 font-mono ${
                           errors.expiryDate
-                            ? 'border-red-500 bg-red-50'
-                            : 'border-slate-200 focus:border-primary focus:ring-2 focus:ring-primary/20'
+                            ? 'border-red-500 focus:border-red-500 focus:ring-red-500'
+                            : 'border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500'
                         } focus:outline-none`}
                       />
                       {errors.expiryDate && (
-                        <p className="text-red-500 text-xs mt-1 flex items-center gap-1">
-                          <AlertCircle className="w-3 h-3" />
+                        <p className="text-red-600 text-xs mt-1">
                           {errors.expiryDate}
                         </p>
                       )}
                     </div>
 
                     <div>
-                      <label className="block text-sm font-bold text-text-main mb-2">
+                      <label className="block text-sm font-medium text-gray-900 mb-1.5">
                         CVC
                       </label>
                       <input
                         type="text"
-                        placeholder="XXX"
+                        placeholder="123"
                         value={formData.cvc}
                         onChange={handleCvcChange}
                         disabled={isProcessing}
                         maxLength="3"
-                        className={`w-full px-4 py-3 rounded-xl border-2 transition-all disabled:opacity-50 font-mono tracking-wider ${
+                        className={`w-full px-3 py-2 rounded border text-sm transition-colors disabled:opacity-50 disabled:bg-gray-50 font-mono tracking-wider ${
                           errors.cvc
-                            ? 'border-red-500 bg-red-50'
-                            : 'border-slate-200 focus:border-primary focus:ring-2 focus:ring-primary/20'
+                            ? 'border-red-500 focus:border-red-500 focus:ring-red-500'
+                            : 'border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500'
                         } focus:outline-none`}
                       />
                       {errors.cvc && (
-                        <p className="text-red-500 text-xs mt-1 flex items-center gap-1">
-                          <AlertCircle className="w-3 h-3" />
+                        <p className="text-red-600 text-xs mt-1">
                           {errors.cvc}
                         </p>
                       )}
                     </div>
                   </div>
 
-                  {/* Security Notice */}
-                  <div className="bg-blue-50 border border-blue-200 rounded-xl p-3 flex items-start gap-3">
-                    <Lock className="w-4 h-4 text-blue-600 flex-shrink-0 mt-0.5" />
-                    <p className="text-xs text-blue-900">
-                      <span className="font-bold">Paiement 100% sécurisé.</span> Vos données sont chiffrées et protégées.
-                    </p>
+                  {/* Security Notice - Minimal */}
+                  <div className="flex items-start gap-2 text-xs text-gray-600 bg-gray-50 p-3 rounded border border-gray-200">
+                    <Lock className="w-4 h-4 text-gray-500 flex-shrink-0 mt-0.5" />
+                    <p>Vos informations sont sécurisées et chiffrées.</p>
                   </div>
 
-                  {/* Submit Button */}
+                  {/* Submit Button - Blue Primary */}
                   <button
                     type="submit"
                     disabled={isProcessing}
-                    className="w-full bg-gradient-to-r from-primary to-indigo-700 text-white py-3 rounded-xl font-bold uppercase tracking-wider text-sm hover:shadow-lg hover:shadow-primary/30 transition-all active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                    className="w-full bg-blue-600 text-white py-2.5 rounded font-medium text-sm hover:bg-blue-700 transition-colors active:bg-blue-800 disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                   >
                     {isProcessing ? (
                       <>
@@ -283,7 +275,7 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
                     ) : (
                       <>
                         <CreditCard className="w-4 h-4" />
-                        <span>Confirmer le paiement</span>
+                        <span>Payer {offer?.price} DHS</span>
                       </>
                     )}
                   </button>
@@ -293,7 +285,7 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
                     type="button"
                     onClick={onClose}
                     disabled={isProcessing}
-                    className="w-full py-2 rounded-xl font-bold text-text-muted hover:bg-slate-100 transition-colors disabled:opacity-50"
+                    className="w-full py-2 rounded font-medium text-sm text-gray-700 hover:bg-gray-100 transition-colors disabled:opacity-50"
                   >
                     Annuler
                   </button>
@@ -301,27 +293,23 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
               ) : (
                 /* Success Screen */
                 <motion.div
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
                   className="text-center py-8"
                 >
-                  <motion.div
-                    animate={{ scale: [1, 1.1, 1] }}
-                    transition={{ repeat: Infinity, duration: 1.5 }}
-                    className="w-16 h-16 bg-success/10 rounded-full flex items-center justify-center mx-auto mb-4"
-                  >
-                    <CheckCircle2 className="w-8 h-8 text-success" />
-                  </motion.div>
-                  <h3 className="text-xl font-bold text-text-main mb-2">Paiement Confirmé!</h3>
-                  <p className="text-text-muted text-sm mb-4">
-                    Bienvenue! Vous allez être redirigé vers votre apprentissage.
+                  <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <CheckCircle2 className="w-6 h-6 text-green-600" />
+                  </div>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-1">Paiement Confirmé!</h3>
+                  <p className="text-sm text-gray-600 mb-4">
+                    Vous allez être redirigé vers votre apprentissage.
                   </p>
-                  <div className="w-full h-1 bg-slate-200 rounded-full overflow-hidden">
+                  <div className="w-full h-1.5 bg-gray-200 rounded-full overflow-hidden">
                     <motion.div
                       initial={{ width: 0 }}
                       animate={{ width: '100%' }}
                       transition={{ duration: 1.5 }}
-                      className="h-full bg-success"
+                      className="h-full bg-green-600"
                     />
                   </div>
                 </motion.div>
