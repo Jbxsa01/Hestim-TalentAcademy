@@ -1,4 +1,4 @@
-import { VercelRequest, VercelResponse } from '@vercel/node';
+import { Handler } from '@netlify/functions';
 import { initializeApp } from 'firebase/app';
 import { getFirestore, collection, getDocs, addDoc, updateDoc, doc } from 'firebase/firestore';
 
@@ -81,14 +81,16 @@ const sampleTalents = [
   }
 ];
 
-export default async function handler(req: VercelRequest, res: VercelResponse) {
-  if (req.method !== 'POST') {
-    res.setHeader('Allow', 'POST');
-    return res.status(405).json({ error: 'Method not allowed' });
+const handler: Handler = async (event, context) => {
+  if (event.httpMethod !== 'POST') {
+    return {
+      statusCode: 405,
+      body: JSON.stringify({ error: 'Method not allowed' }),
+      headers: { 'Allow': 'POST' }
+    };
   }
 
   try {
-    // Update all existing prices to 120 DH
     console.log('🔄 Updating all existing offer prices to 120 DH...');
     const talentsSnap = await getDocs(collection(db, 'talents'));
     let updatedCount = 0;
@@ -125,20 +127,28 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     console.log(`✅ Added ${addedCount} talents with ${sampleTalents.length * 2} offers`);
 
-    return res.status(200).json({
-      success: true,
-      message: `✅ Successfully updated ${updatedCount} existing offers and added ${addedCount} new talents, all with 120 DH fixed price`,
-      stats: {
-        updatedOffers: updatedCount,
-        addedTalents: addedCount,
-        newOffers: sampleTalents.length * 2
-      }
-    });
-  } catch (error) {
+    return {
+      statusCode: 200,
+      body: JSON.stringify({
+        success: true,
+        message: `✅ Successfully updated ${updatedCount} existing offers and added ${addedCount} new talents, all with 120 DH fixed price`,
+        stats: {
+          updatedOffers: updatedCount,
+          addedTalents: addedCount,
+          newOffers: sampleTalents.length * 2
+        }
+      })
+    };
+  } catch (error: any) {
     console.error('Error:', error);
-    return res.status(500).json({
-      success: false,
-      error: error instanceof Error ? error.message : 'Unknown error'
-    });
+    return {
+      statusCode: 500,
+      body: JSON.stringify({
+        success: false,
+        error: error.message || 'Unknown error'
+      })
+    };
   }
-}
+};
+
+export { handler };

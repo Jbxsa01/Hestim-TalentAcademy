@@ -1,4 +1,4 @@
-import { VercelRequest, VercelResponse } from '@vercel/node';
+import { Handler } from '@netlify/functions';
 import { initializeApp } from 'firebase/app';
 import { getFirestore, collection, addDoc } from 'firebase/firestore';
 
@@ -83,10 +83,13 @@ function generateOffers(talentIndex: number): any[] {
   return offers;
 }
 
-export default async function handler(req: VercelRequest, res: VercelResponse) {
-  if (req.method !== 'POST') {
-    res.setHeader('Allow', 'POST');
-    return res.status(405).json({ error: 'Method not allowed' });
+const handler: Handler = async (event, context) => {
+  if (event.httpMethod !== 'POST') {
+    return {
+      statusCode: 405,
+      body: JSON.stringify({ error: 'Method not allowed' }),
+      headers: { 'Allow': 'POST' }
+    };
   }
 
   try {
@@ -118,20 +121,28 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     console.log(`🎉 Complétion: ${talentCount} talents créés avec ${offerCount} offres!`);
 
-    return res.status(200).json({
-      success: true,
-      message: `✅ ${talentCount} talents créés avec succès!`,
-      stats: {
-        talentsAdded: talentCount,
-        totalOffers: offerCount,
-        averageOffersPerTalent: (offerCount / talentCount).toFixed(1)
-      }
-    });
-  } catch (error) {
+    return {
+      statusCode: 200,
+      body: JSON.stringify({
+        success: true,
+        message: `✅ ${talentCount} talents créés avec succès!`,
+        stats: {
+          talentsAdded: talentCount,
+          totalOffers: offerCount,
+          averageOffersPerTalent: (offerCount / talentCount).toFixed(1)
+        }
+      })
+    };
+  } catch (error: any) {
     console.error('Erreur:', error);
-    return res.status(500).json({
-      success: false,
-      error: error instanceof Error ? error.message : 'Erreur inconnue'
-    });
+    return {
+      statusCode: 500,
+      body: JSON.stringify({
+        success: false,
+        error: error.message || 'Erreur inconnue'
+      })
+    };
   }
-}
+};
+
+export { handler };

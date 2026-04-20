@@ -141,9 +141,13 @@ const AdminPanel = () => {
     
     setLoading(true);
     try {
-      const response = await fetch('/api/seed-50talents', {
+      const response = await fetch('/.netlify/functions/seed-50talents', {
         method: 'POST',
       });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
       
       const data = await response.json();
       
@@ -155,7 +159,7 @@ const AdminPanel = () => {
       }
     } catch (err) {
       console.error('Error adding talents:', err);
-      alert('❌ Erreur lors de l\'ajout des talents');
+      alert(`❌ Erreur lors de l\'ajout des talents: ${err instanceof Error ? err.message : 'Unknown error'}`);
     } finally {
       setLoading(false);
     }
@@ -168,9 +172,13 @@ const AdminPanel = () => {
     
     setLoading(true);
     try {
-      const response = await fetch('/api/seed-talents', {
+      const response = await fetch('/.netlify/functions/seed-talents', {
         method: 'POST',
       });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
       
       const data = await response.json();
       
@@ -182,7 +190,7 @@ const AdminPanel = () => {
       }
     } catch (err) {
       console.error('Error resetting prices:', err);
-      alert('❌ Erreur lors de la mise à jour des prix');
+      alert(`❌ Erreur lors de la mise à jour des prix: ${err instanceof Error ? err.message : 'Unknown error'}`);
     } finally {
       setLoading(false);
     }
