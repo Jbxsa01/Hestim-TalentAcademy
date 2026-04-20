@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { X, CreditCard, Lock, AlertCircle, CheckCircle2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import { User as UserIcon, Calendar as CalendarIcon, Key as KeyIcon } from 'lucide-react';
 
 interface PaymentModalProps {
   isOpen: boolean;
@@ -152,21 +153,25 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
                   <div className="flex-1 space-y-4">
                     {/* Card Holder Name */}
                     <div>
-                      <label className="block text-sm font-medium text-gray-900 mb-1.5">
+                      <label className="block text-sm font-medium text-gray-900 mb-1.5 flex items-center gap-2">
+                        <UserIcon className="w-4 h-4 text-gray-400" />
                         Nom du titulaire
                       </label>
-                      <input
-                        type="text"
-                        placeholder="Jean Dupont"
-                        value={formData.cardName}
-                        onChange={(e) => setFormData({ ...formData, cardName: e.target.value })}
-                        disabled={isProcessing}
-                        className={`w-full px-3 py-2 rounded border text-sm transition-colors disabled:opacity-50 disabled:bg-gray-50 ${
-                          errors.cardName
-                            ? 'border-red-500 focus:border-red-500 focus:ring-red-500'
-                            : 'border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500'
-                        } focus:outline-none`}
-                      />
+                      <div className="relative">
+                        <input
+                          type="text"
+                          placeholder="Jean Dupont"
+                          value={formData.cardName}
+                          onChange={(e) => setFormData({ ...formData, cardName: e.target.value })}
+                          disabled={isProcessing}
+                          className={`w-full px-3 py-2 rounded border text-sm transition-colors disabled:opacity-50 disabled:bg-gray-50 pl-9 ${
+                            errors.cardName
+                              ? 'border-red-500 focus:border-red-500 focus:ring-red-500'
+                              : 'border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500'
+                          } focus:outline-none`}
+                        />
+                        <UserIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+                      </div>
                       {errors.cardName && (
                         <p className="text-red-600 text-xs mt-1 flex items-center gap-1">
                           <AlertCircle className="w-3 h-3" />
@@ -177,22 +182,26 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
 
                     {/* Card Number */}
                     <div>
-                      <label className="block text-sm font-medium text-gray-900 mb-1.5">
+                      <label className="block text-sm font-medium text-gray-900 mb-1.5 flex items-center gap-2">
+                        <CreditCard className="w-4 h-4 text-gray-400" />
                         Numéro de carte
                       </label>
-                      <input
-                        type="text"
-                        placeholder="4242 4242 4242 4242"
-                        value={formData.cardNumber}
-                        onChange={handleCardNumberChange}
-                        disabled={isProcessing}
-                        maxLength="19"
-                        className={`w-full px-3 py-2 rounded border text-sm transition-colors disabled:opacity-50 disabled:bg-gray-50 font-mono tracking-wider ${
-                          errors.cardNumber
-                            ? 'border-red-500 focus:border-red-500 focus:ring-red-500'
-                            : 'border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500'
-                        } focus:outline-none`}
-                      />
+                      <div className="relative">
+                        <input
+                          type="text"
+                          placeholder="4242 4242 4242 4242"
+                          value={formData.cardNumber}
+                          onChange={handleCardNumberChange}
+                          disabled={isProcessing}
+                          maxLength={19}
+                          className={`w-full px-3 py-2 rounded border text-sm transition-colors disabled:opacity-50 disabled:bg-gray-50 font-mono tracking-wider pl-9 ${
+                            errors.cardNumber
+                              ? 'border-red-500 focus:border-red-500 focus:ring-red-500'
+                              : 'border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500'
+                          } focus:outline-none`}
+                        />
+                        <CreditCard className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+                      </div>
                       {errors.cardNumber && (
                         <p className="text-red-600 text-xs mt-1 flex items-center gap-1">
                           <AlertCircle className="w-3 h-3" />
@@ -204,22 +213,26 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
                     {/* Expiry & CVC */}
                     <div className="flex gap-3">
                       <div className="w-1/2">
-                        <label className="block text-sm font-medium text-gray-900 mb-1.5">
+                        <label className="block text-sm font-medium text-gray-900 mb-1.5 flex items-center gap-2">
+                          <CalendarIcon className="w-4 h-4 text-gray-400" />
                           Expiration
                         </label>
-                        <input
-                          type="text"
-                          placeholder="12/25"
-                          value={formData.expiryDate}
-                          onChange={handleExpiryChange}
-                          disabled={isProcessing}
-                          maxLength="5"
-                          className={`w-full px-3 py-2 rounded border text-sm transition-colors disabled:opacity-50 disabled:bg-gray-50 font-mono ${
-                            errors.expiryDate
-                              ? 'border-red-500 focus:border-red-500 focus:ring-red-500'
-                              : 'border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500'
-                          } focus:outline-none`}
-                        />
+                        <div className="relative">
+                          <input
+                            type="text"
+                            placeholder="12/25"
+                            value={formData.expiryDate}
+                            onChange={handleExpiryChange}
+                            disabled={isProcessing}
+                            maxLength={5}
+                            className={`w-full px-3 py-2 rounded border text-sm transition-colors disabled:opacity-50 disabled:bg-gray-50 font-mono pl-9 ${
+                              errors.expiryDate
+                                ? 'border-red-500 focus:border-red-500 focus:ring-red-500'
+                                : 'border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500'
+                            } focus:outline-none`}
+                          />
+                          <CalendarIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+                        </div>
                         {errors.expiryDate && (
                           <p className="text-red-600 text-xs mt-1">
                             {errors.expiryDate}
@@ -227,22 +240,26 @@ const PaymentModal: React.FC<PaymentModalProps> = ({
                         )}
                       </div>
                       <div className="w-1/2">
-                        <label className="block text-sm font-medium text-gray-900 mb-1.5">
+                        <label className="block text-sm font-medium text-gray-900 mb-1.5 flex items-center gap-2">
+                          <KeyIcon className="w-4 h-4 text-gray-400" />
                           CVC
                         </label>
-                        <input
-                          type="text"
-                          placeholder="123"
-                          value={formData.cvc}
-                          onChange={handleCvcChange}
-                          disabled={isProcessing}
-                          maxLength="3"
-                          className={`w-full px-3 py-2 rounded border text-sm transition-colors disabled:opacity-50 disabled:bg-gray-50 font-mono tracking-wider ${
-                            errors.cvc
-                              ? 'border-red-500 focus:border-red-500 focus:ring-red-500'
-                              : 'border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500'
-                          } focus:outline-none`}
-                        />
+                        <div className="relative">
+                          <input
+                            type="text"
+                            placeholder="123"
+                            value={formData.cvc}
+                            onChange={handleCvcChange}
+                            disabled={isProcessing}
+                            maxLength={3}
+                            className={`w-full px-3 py-2 rounded border text-sm transition-colors disabled:opacity-50 disabled:bg-gray-50 font-mono tracking-wider pl-9 ${
+                              errors.cvc
+                                ? 'border-red-500 focus:border-red-500 focus:ring-red-500'
+                                : 'border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500'
+                            } focus:outline-none`}
+                          />
+                          <KeyIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+                        </div>
                         {errors.cvc && (
                           <p className="text-red-600 text-xs mt-1">
                             {errors.cvc}

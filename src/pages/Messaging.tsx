@@ -47,7 +47,7 @@ const Messaging = () => {
       orderBy('createdAt', 'asc')
     );
     const unsubscribe = onSnapshot(q, async (snap) => {
-      const msgData = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+      const msgData = snap.docs.map(d => ({ id: d.id, ...d.data() } as any));
       setMessages(msgData);
 
       // Fetch sender info for all messages
@@ -154,11 +154,6 @@ const Messaging = () => {
                   <span className={`font-black text-sm truncate max-w-[140px] ${urlChatId === chat.id ? 'text-white' : 'text-text-main'}`}>
                     {chat.talentTitle}
                   </span>
-                  <span className={`text-[9px] font-black uppercase tracking-widest px-2 py-0.5 rounded ${
-                    urlChatId === chat.id ? 'bg-white/20 text-white' : 'bg-indigo-50 text-primary'
-                  }`}>
-                    Live
-                  </span>
                 </div>
                 <p className={`text-[11px] truncate font-medium ${urlChatId === chat.id ? 'text-indigo-100' : 'text-text-muted'}`}>
                    {chat.lastMessage || 'Open chat to start discussing...'}
@@ -189,10 +184,6 @@ const Messaging = () => {
                   </div>
                   <div>
                     <h3 className="font-black text-text-main leading-tight tracking-tight text-xl italic">{activeChat?.talentTitle}</h3>
-                    <div className="flex items-center space-x-2 mt-1">
-                      <div className="w-2 h-2 bg-success rounded-full animate-pulse shadow-[0_0_8px_rgba(16,185,129,0.5)]" />
-                      <p className="text-[10px] text-success font-black uppercase tracking-[0.2em]">Live Mentorship Channel</p>
-                    </div>
                   </div>
                 </div>
                 <div className="hidden sm:flex items-center space-x-2 bg-gray-50 px-4 py-2 rounded-xl border border-border-subtle">

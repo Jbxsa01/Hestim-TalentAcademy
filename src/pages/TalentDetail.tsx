@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { doc, getDoc, collection, getDocs, addDoc } from 'firebase/firestore';
 import { db } from '../lib/firebase';
 import { useAuth } from '../contexts/AuthContext';
-import { Star, Clock, Users, CheckCircle2, MessageSquare, CreditCard, ArrowLeft, LayoutGrid, Radio, Zap, Award, BookOpen, Loader2 } from 'lucide-react';
+import { Star, Clock, Users, CheckCircle2, MessageSquare, CreditCard, ArrowLeft, LayoutGrid, Award, BookOpen, Loader2 } from 'lucide-react';
 import { motion } from 'motion/react';
 import FollowTalentButton from '../components/FollowTalentButton';
 import PaymentModal from '../components/PaymentModal';
@@ -303,24 +303,7 @@ const TalentDetail = () => {
         </div>
       </div>
 
-      {/* Live Banner */}
-      {talent.isActive && (
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="max-w-6xl mx-auto px-6 mb-8 bg-gradient-to-r from-red-500 to-red-600 rounded-2xl p-6 text-white shadow-lg shadow-red-500/20"
-        >
-          <div className="flex items-center gap-4">
-            <div className="bg-white/20 backdrop-blur p-3 rounded-xl">
-              <Radio className="w-5 h-5 animate-pulse text-red-100" />
-            </div>
-            <div>
-              <p className="font-bold text-sm uppercase tracking-widest">🔴 Session en direct</p>
-              <p className="text-sm text-red-100 mt-1">Cette formation est actuellement en cours. Rejoignez maintenant!</p>
-            </div>
-          </div>
-        </motion.div>
-      )}
+
 
       {/* Main Content */}
       <div className="max-w-6xl mx-auto px-6 py-12">
@@ -340,12 +323,6 @@ const TalentDetail = () => {
                     alt={talent.title}
                     className="w-full h-full object-cover"
                   />
-                )}
-                {talent.isActive && (
-                  <div className="absolute top-6 right-6 flex items-center gap-2 bg-red-500 text-white px-4 py-2 rounded-full font-bold text-xs uppercase animate-pulse shadow-lg">
-                    <Radio className="w-4 h-4" />
-                    En direct
-                  </div>
                 )}
               </div>
             </motion.div>
@@ -464,23 +441,10 @@ const TalentDetail = () => {
                       <button
                         onClick={() => handleOpenPayment(offer)}
                         disabled={purchasing}
-                        className={`w-full py-3 rounded-xl font-bold uppercase tracking-wider text-sm transition-all active:scale-95 disabled:opacity-50 flex items-center justify-center gap-2 ${
-                          talent.isActive
-                            ? 'bg-red-500 text-white hover:bg-red-600 shadow-lg shadow-red-500/30'
-                            : 'bg-primary text-white hover:bg-indigo-700 shadow-lg shadow-primary/30'
-                        }`}
+                        className={`w-full py-3 rounded-xl font-bold uppercase tracking-wider text-sm transition-all active:scale-95 disabled:opacity-50 flex items-center justify-center gap-2 bg-primary text-white hover:bg-indigo-700 shadow-lg shadow-primary/30`}
                       >
-                        {talent.isActive ? (
-                          <>
-                            <Radio className="w-4 h-4 animate-pulse" />
-                            <span>Rejoindre Maintenant</span>
-                          </>
-                        ) : (
-                          <>
-                            <CreditCard className="w-4 h-4" />
-                            <span>S'inscrire</span>
-                          </>
-                        )}
+                        <CreditCard className="w-4 h-4" />
+                        <span>S'inscrire</span>
                       </button>
                     </motion.div>
                   ))}
