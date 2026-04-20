@@ -6,6 +6,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { Star, Clock, Users, CheckCircle2, MessageSquare, CreditCard, ArrowLeft, LayoutGrid, Radio, Zap, Award, BookOpen, Loader2 } from 'lucide-react';
 import { motion } from 'motion/react';
 import FollowTalentButton from '../components/FollowTalentButton';
+import PaymentModal from '../components/PaymentModal';
 
 // Mock Talents for Development
 const MOCK_TALENTS = [
@@ -183,6 +184,8 @@ const TalentDetail = () => {
   const [offers, setOffers] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [purchasing, setPurchasing] = useState(false);
+  const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
+  const [selectedOffer, setSelectedOffer] = useState<any>(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -216,9 +219,14 @@ const TalentDetail = () => {
     fetchData();
   }, [id]);
 
-  const handlePurchase = async (offer: any) => {
+  const handleOpenPayment = (offer: any) => {
     if (!user) return navigate('/login');
-    if (!talent) return;
+    setSelectedOffer(offer);
+    setIsPaymentModalOpen(true);
+  };
+
+  const handlePurchase = async () => {
+    if (!user || !talent || !selectedOffer) return;
 
     setPurchasing(true);
     try {
@@ -226,12 +234,12 @@ const TalentDetail = () => {
       const transactionData = {
         learnerId: user.uid,
         trainerId: talent.trainerId,
-        offerId: offer.id,
+        offerId: selectedOffer.id,
         talentId: talent.id,
-        amount: offer.price || 120,
-        commission: Math.round((offer.price || 120) * 0.2),
+        amount: selectedOffer.price || 120,
+        commission: Math.round((selectedOffer.price || 120) * 0.2),
         status: 'completed',
-        paymentMethod: 'mock',
+        paymentMethod: 'card_mock',
         createdAt: new Date().toISOString(),
       };
       
@@ -240,8 +248,8 @@ const TalentDetail = () => {
       // Create chat
       const chatData = {
         participants: [user.uid, talent.trainerId],
-        offerId: offer.id,
-        offerTitle: offer.title,
+        offerId: selectedOffer.id,
+        offerTitle: selectedOffer.title,
         talentTitle: talent.title,
         talentId: talent.id,
         updatedAt: new Date().toISOString(),
@@ -454,7 +462,7 @@ const TalentDetail = () => {
 
                       {/* CTA Button */}
                       <button
-                        onClick={() => handlePurchase(offer)}
+                        onClick={() => handleOpenPayment(offer)}
                         disabled={purchasing}
                         className={`w-full py-3 rounded-xl font-bold uppercase tracking-wider text-sm transition-all active:scale-95 disabled:opacity-50 flex items-center justify-center gap-2 ${
                           talent.isActive
@@ -490,6 +498,19 @@ const TalentDetail = () => {
           </div>
         </motion.div>
       </div>
+
+      {/* Payment Modal */}
+      <PaymentModal
+        isOpen={isPaymentModalOpen}
+        onClose={() => {
+          setIsPaymentModalOpen(false);
+          setSelectedOffer(null);
+        }}
+        onConfirm={handlePurchase}
+        offer={selectedOffer}
+        talent={talent}
+        isProcessing={purchasing}
+      />
     </div>
   );
 };
