@@ -69,8 +69,12 @@ const TalentCard: React.FC<TalentProps> = ({ talent }) => {
             to={`/trainer/${talent.trainerId}`}
             className="flex items-center space-x-1 min-w-0 hover:opacity-80 transition-opacity group"
           >
-            <div className={`w-5 h-5 rounded-full flex items-center justify-center font-black text-[7px] uppercase tracking-tighter flex-shrink-0 text-white bg-accent/10 text-accent group-hover:bg-accent/20 transition-all`}>
-              {talent.trainerName?.split(' ').map(n => n[0]).join('') || 'HT'}
+            <div className={`w-5 h-5 rounded-full flex items-center justify-center font-black text-[7px] uppercase tracking-tighter flex-shrink-0 text-white bg-accent/10 text-accent group-hover:bg-accent/20 transition-all overflow-hidden`}>
+              {talent.trainerPhotoURL ? (
+                <img src={talent.trainerPhotoURL} alt={talent.trainerName} className="w-full h-full object-cover" />
+              ) : (
+                talent.trainerName?.split(' ').map(n => n[0]).join('') || 'HT'
+              )}
             </div>
             <span className="text-[8px] font-extrabold text-text-muted uppercase tracking-wider truncate group-hover:text-primary">{talent.trainerName || 'Hestim Mentor'}</span>
           </Link>

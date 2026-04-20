@@ -361,11 +361,18 @@ const TalentDetail = () => {
               <p className="text-xs text-text-muted font-bold uppercase tracking-wider mb-4">Instructeur</p>
               <div className="flex items-start justify-between">
                 <div className="flex gap-4">
-                  <div className="w-16 h-16 rounded-full bg-gradient-to-br from-primary to-indigo-700 flex items-center justify-center text-white font-bold text-xl flex-shrink-0">
-                    {talent.trainerName?.charAt(0) || 'T'}
+                  <div className="w-16 h-16 rounded-full bg-gradient-to-br from-primary to-indigo-700 flex items-center justify-center text-white font-bold text-xl flex-shrink-0 overflow-hidden">
+                    {talent.trainerPhotoURL ? (
+                      <img src={talent.trainerPhotoURL} alt={talent.trainerName} className="w-full h-full object-cover" />
+                    ) : (
+                      talent.trainerName?.charAt(0) || 'T'
+                    )}
                   </div>
                   <div>
-                    <h3 className="font-bold text-text-main text-lg">{talent.trainerName || 'Hestim Trainer'}</h3>
+                    <div className="flex items-center gap-3">
+                      <h3 className="font-bold text-text-main text-lg">{talent.trainerName || 'Hestim Trainer'}</h3>
+                      <FollowTalentButton talentId={talent.id} size="sm" showLabel={true} />
+                    </div>
                     <div className="flex items-center gap-3 mt-2">
                       <div className="flex items-center gap-1">
                         <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { collection, query, where, addDoc, deleteDoc, getDocs } from 'firebase/firestore';
 import { db } from '../lib/firebase';
 import { useAuth } from '../contexts/AuthContext';
-import { Heart } from 'lucide-react';
+import { UserPlus, UserCheck, Loader2 } from 'lucide-react';
 
 interface FollowButtonProps {
   talentId: string;
@@ -29,12 +29,6 @@ const FollowTalentButton: React.FC<FollowButtonProps> = ({ talentId, size = 'md'
         const followSnap = await getDocs(followQuery);
         setIsFollowing(followSnap.docs.length > 0);
       } catch (error: any) {
-        // Handle gracefully - composite indexes needed in Firebase
-        const isPermissionError = error?.code === 'permission-denied' || error?.message?.includes('permission');
-        if (!isPermissionError) {
-          console.error('Error checking follow:', error);
-        }
-        // Silently set to false - will work once composite index is created
         setIsFollowing(false);
       }
     };
@@ -43,6 +37,7 @@ const FollowTalentButton: React.FC<FollowButtonProps> = ({ talentId, size = 'md'
   }, [user, talentId]);
 
   const handleFollow = async (e: React.MouseEvent) => {
+    e.preventDefault();
     e.stopPropagation();
     if (!user) {
       alert('Veuillez vous connecter d\'abord');
@@ -59,8 +54,8 @@ const FollowTalentButton: React.FC<FollowButtonProps> = ({ talentId, size = 'md'
           where('followingType', '==', 'talent')
         );
         const followSnap = await getDocs(followQuery);
-        for (const doc of followSnap.docs) {
-          await deleteDoc(doc.ref);
+        for (const docSnapshot of followSnap.docs) {
+          await deleteDoc(docSnapshot.ref);
         }
         setIsFollowing(false);
       } else {
@@ -80,31 +75,39 @@ const FollowTalentButton: React.FC<FollowButtonProps> = ({ talentId, size = 'md'
   };
 
   const sizeClasses = {
-    sm: 'p-1.5',
-    md: 'p-2',
-    lg: 'p-3',
+    sm: 'p-1',
+    md: 'p-1.5',
+    lg: 'px-4 py-2',
   };
 
   const iconSizes = {
-    sm: 'w-3 h-3',
-    md: 'w-4 h-4',
-    lg: 'w-5 h-5',
+    sm: 'w-2.5 h-2.5',
+    md: 'w-3.5 h-3.5',
+    lg: 'w-4 h-4',
   };
 
   return (
     <button
       onClick={handleFollow}
       disabled={loading}
-      className={`${sizeClasses[size]} rounded-lg transition-all active:scale-95 disabled:opacity-50 flex items-center gap-2 ${
+      className={`${sizeClasses[size]} rounded-lg transition-all active:scale-95 disabled:opacity-50 flex items-center justify-center gap-2 border ${
         isFollowing
-          ? 'bg-red-50 hover:bg-red-100 text-red-500'
-          : 'bg-slate-100 hover:bg-slate-200 text-slate-500'
+          ? 'bg-primary text-white border-primary shadow-sm'
+          : 'bg-white text-primary border-primary/20 hover:border-primary hover:bg-primary/5'
       }`}
       title={isFollowing ? 'Ne plus suivre' : 'Suivre ce talent'}
     >
-      <Heart className={`${iconSizes[size]} ${isFollowing ? 'fill-current' : ''}`} />
-      {showLabel && size === 'lg' && (
-        <span className="text-xs font-bold">{isFollowing ? 'Suivi' : 'Suivre'}</span>
+      {loading ? (
+        <Loader2 className={`${iconSizes[size]} animate-spin`} />
+      ) : isFollowing ? (
+        <UserCheck className={`${iconSizes[size]}`} />
+      ) : (
+        <UserPlus className={`${iconSizes[size]}`} />
+      )}
+      {showLabel && (
+        <span className={`${size === 'lg' ? 'text-sm' : 'text-[9px]'} font-bold`}>
+          {isFollowing ? 'Suivi' : 'Suivre'}
+        </span>
       )}
     </button>
   );

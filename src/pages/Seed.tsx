@@ -260,6 +260,7 @@ export default function Seed() {
           skills: ['Enseignement', talent.title],
           trainerId: user.uid,
           trainerName: user.displayName || user.email || 'Admin Trainer',
+          trainerPhotoURL: user.photoURL || null,
           price: offers[0]?.price || 100, // default base price based on first offer
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString()

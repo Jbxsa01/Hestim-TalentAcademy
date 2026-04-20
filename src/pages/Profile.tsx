@@ -4,7 +4,11 @@ import { useNavigate } from 'react-router-dom';
 import { doc, updateDoc } from 'firebase/firestore';
 import { db } from '../lib/firebase';
 import { motion } from 'motion/react';
-import { ArrowLeft, Edit2, Save, X, Upload, Loader2, LogOut } from 'lucide-react';
+import { 
+  ArrowLeft, Edit2, Save, X, Upload, Loader2, LogOut, 
+  User, Mail, Phone, MapPin, Calendar, ShieldCheck, 
+  Star, Briefcase, DollarSign, Camera
+} from 'lucide-react';
 import { signOut } from 'firebase/auth';
 import { auth } from '../lib/firebase';
 
@@ -37,16 +41,11 @@ const Profile = () => {
       reader.onload = (event) => {
         const dataUrl = event.target?.result as string;
         setFormData(prev => ({ ...prev, photoURL: dataUrl }));
-        console.log('✅ Photo convertie en Data URL');
         setIsUploading(false);
-      };
-      reader.onerror = () => {
-        throw new Error('Failed to read file');
       };
       reader.readAsDataURL(file);
     } catch (err) {
       console.error("❌ Erreur:", err);
-      alert('Erreur lecture image.');
       setIsUploading(false);
     } finally {
       if (fileInputRef.current) fileInputRef.current.value = '';
@@ -63,16 +62,11 @@ const Profile = () => {
       reader.onload = (event) => {
         const dataUrl = event.target?.result as string;
         setFormData(prev => ({ ...prev, bannerURL: dataUrl }));
-        console.log('✅ Bannière convertie en Data URL');
         setUploadingBanner(false);
-      };
-      reader.onerror = () => {
-        throw new Error('Failed to read file');
       };
       reader.readAsDataURL(file);
     } catch (err) {
       console.error("❌ Erreur:", err);
-      alert('Erreur lecture bannière.');
       setUploadingBanner(false);
     } finally {
       if (bannerInputRef.current) bannerInputRef.current.value = '';
@@ -93,8 +87,6 @@ const Profile = () => {
         bannerURL: formData.bannerURL,
         updatedAt: new Date().toISOString(),
       });
-
-      console.log('✅ Profil mis à jour');
       setIsEditing(false);
       window.location.reload();
     } catch (err) {
@@ -113,222 +105,278 @@ const Profile = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 py-12">
-      <div className="max-w-2xl mx-auto px-6">
-        {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="flex items-center justify-between mb-12"
-        >
+    <div className="min-h-screen bg-[#F8FAFC]">
+      {/* Dynamic Header Background */}
+      <div className="h-[300px] relative overflow-hidden bg-slate-900">
+        <div 
+          className="absolute inset-0 bg-cover bg-center transition-transform duration-700 scale-105"
+          style={{ 
+            backgroundImage: formData.bannerURL ? `url(${formData.bannerURL})` : 'none',
+            filter: 'brightness(0.7)'
+          }}
+        />
+        {!formData.bannerURL && (
+          <div className="absolute inset-0 bg-gradient-to-br from-primary via-indigo-900 to-slate-900 mix-blend-multiply opacity-80" />
+        )}
+        
+        {isEditing && (
+          <button 
+            onClick={() => bannerInputRef.current?.click()}
+            className="absolute inset-0 m-auto w-fit h-fit px-6 py-3 bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl flex items-center gap-3 text-white font-bold hover:bg-white/20 transition-all z-10"
+          >
+            {uploadingBanner ? <Loader2 className="w-5 h-5 animate-spin" /> : <Camera className="w-5 h-5" />}
+            Changer la bannière
+          </button>
+        )}
+        <input type="file" ref={bannerInputRef} onChange={handleBannerUpload} accept="image/*" className="hidden" />
+
+        <div className="absolute top-8 left-8 flex items-center justify-between w-[calc(100%-64px)] z-20">
           <button
             onClick={() => navigate('/dashboard')}
-            className="flex items-center gap-2 px-4 py-2 text-gray-600 hover:bg-white rounded-xl transition-all"
+            className="flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-md text-white border border-white/20 rounded-xl hover:bg-white/20 transition-all font-bold"
           >
             <ArrowLeft className="w-5 h-5" />
             Retour
           </button>
-          <h1 className="text-3xl font-black text-gray-900">Mon Profil</h1>
-          <div className="w-10" />
-        </motion.div>
-
-        {/* Profile Card */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="bg-white rounded-[32px] shadow-2xl overflow-hidden"
-        >
-          {/* Cover Background */}
-          <div 
-            className={`h-32 bg-gradient-to-r from-primary to-primary/70 transition-all ${isEditing ? 'cursor-pointer hover:opacity-80' : ''}`}
-            style={formData.bannerURL ? { backgroundImage: `url(${formData.bannerURL})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {}}
-            onClick={() => isEditing && bannerInputRef.current?.click()}
+          <button
+            onClick={handleLogout}
+            className="flex items-center gap-2 px-4 py-2 bg-red-500/10 backdrop-blur-md text-red-400 border border-red-500/20 rounded-xl hover:bg-red-500/20 transition-all font-bold"
           >
-            {isEditing && (
-              <div className="w-full h-full flex items-center justify-center gap-2 bg-black/20">
-                <Upload className="w-6 h-6 text-white" />
-                <span className="text-white font-bold text-sm">Cliquez pour changer la bannière</span>
-              </div>
-            )}
-          </div>
-          <input
-            type="file"
-            ref={bannerInputRef}
-            onChange={handleBannerUpload}
-            accept="image/*"
-            className="hidden"
-          />
+            <LogOut className="w-5 h-5" />
+            Déconnexion
+          </button>
+        </div>
+      </div>
 
-          {/* Profile Content */}
-          <div className="px-10 pb-12">
-            {/* Avatar Section */}
-            <div className="flex flex-col sm:flex-row items-center sm:items-end gap-6 -mt-16 mb-10">
-              <div className="relative">
-                <div className="w-32 h-32 rounded-[28px] border-4 border-white shadow-lg overflow-hidden bg-gray-100">
+      <div className="max-w-6xl mx-auto px-6 -mt-32 relative z-30 pb-20">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+          
+          {/* Left Column: Profile Card */}
+          <div className="lg:col-span-4 space-y-6">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="bg-white rounded-[32px] p-8 shadow-xl shadow-slate-200/50 border border-slate-100 flex flex-col items-center text-center"
+            >
+              <div className="relative group">
+                <div className="w-40 h-40 rounded-[40px] border-8 border-white shadow-2xl overflow-hidden bg-slate-50 ring-1 ring-slate-100">
                   {formData.photoURL ? (
-                    <img
-                      src={formData.photoURL}
-                      alt={formData.displayName}
-                      className="w-full h-full object-cover"
-                    />
+                    <img src={formData.photoURL} alt={formData.displayName} className="w-full h-full object-cover" />
                   ) : (
-                    <div className="w-full h-full flex items-center justify-center text-4xl font-black text-primary/20">
-                      {formData.displayName?.charAt(0)?.toUpperCase() || '?'}
+                    <div className="w-full h-full flex items-center justify-center text-5xl font-black text-slate-200 uppercase">
+                      {formData.displayName?.charAt(0) || '?'}
                     </div>
                   )}
                 </div>
                 {isEditing && (
                   <button
                     onClick={() => fileInputRef.current?.click()}
-                    disabled={isUploading}
-                    className="absolute bottom-0 right-0 w-10 h-10 bg-primary text-white rounded-xl flex items-center justify-center hover:bg-primary/90 transition-all disabled:opacity-50"
+                    className="absolute bottom-2 right-2 w-12 h-12 bg-primary text-white rounded-2xl shadow-xl flex items-center justify-center hover:scale-110 transition-all ring-4 ring-white"
                   >
                     {isUploading ? <Loader2 className="w-5 h-5 animate-spin" /> : <Upload className="w-5 h-5" />}
                   </button>
                 )}
-                <input
-                  type="file"
-                  ref={fileInputRef}
-                  onChange={handleImageUpload}
-                  accept="image/*"
-                  className="hidden"
-                />
+                <input type="file" ref={fileInputRef} onChange={handleImageUpload} accept="image/*" className="hidden" />
               </div>
-              <div className="flex-1 text-center sm:text-left">
-                <h2 className="text-3xl font-black text-gray-900 mb-2">{formData.displayName}</h2>
-                <p className="text-sm text-gray-500 font-bold uppercase tracking-wider">{formData.email}</p>
-                <p className="text-sm text-gray-500 mt-2">Membre depuis {profile?.createdAt ? new Date(profile.createdAt).toLocaleDateString('fr-FR') : 'N/A'}</p>
+
+              <div className="mt-8 space-y-2">
+                <div className="flex items-center gap-2 justify-center">
+                  <h2 className="text-2xl font-black text-slate-900">{formData.displayName}</h2>
+                  <ShieldCheck className="w-6 h-6 text-primary fill-primary/10" />
+                </div>
+                <p className="text-slate-500 font-bold flex items-center gap-2 justify-center">
+                  <Mail className="w-4 h-4" /> {formData.email}
+                </p>
+                <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-slate-50 border border-slate-100 rounded-full mt-4">
+                  <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+                  <span className="text-xs font-bold text-slate-600 uppercase tracking-widest leading-none">Actif</span>
+                </div>
               </div>
+
+              <div className="w-full grid grid-cols-2 gap-4 mt-12 pt-12 border-t border-slate-50">
+                <div className="text-left">
+                  <p className="text-[10px] font-black uppercase text-slate-400 tracking-tighter">Membre</p>
+                  <p className="font-bold text-slate-700">{profile?.createdAt ? new Date(profile.createdAt).toLocaleDateString('fr-FR', { month: 'short', year: 'numeric' }) : 'N/A'}</p>
+                </div>
+                <div className="text-right">
+                  <p className="text-[10px] font-black uppercase text-slate-400 tracking-tighter">Rôle</p>
+                  <p className="font-bold text-primary uppercase text-sm">{(profile?.roles?.[0] || 'Apprenant')}</p>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Quick Actions/Stats */}
+            <motion.div
+               initial={{ opacity: 0, y: 20 }}
+               animate={{ opacity: 1, y: 0 }}
+               transition={{ delay: 0.1 }}
+               className="bg-slate-900 rounded-[32px] p-8 text-white shadow-2xl relative overflow-hidden"
+            >
+              <div className="relative z-10 space-y-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-xs font-bold text-white/50 uppercase tracking-widest mb-1">Revenus cumulés</p>
+                    <p className="text-3xl font-black">{profile?.revenue || 0} DHS</p>
+                  </div>
+                  <div className="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center">
+                    <DollarSign className="w-6 h-6 text-white" />
+                  </div>
+                </div>
+                <div className="h-2 w-full bg-white/10 rounded-full overflow-hidden">
+                  <div className="h-full bg-primary w-[45%]" />
+                </div>
+                <p className="text-[10px] font-bold text-white/40 uppercase tracking-tighter italic">Objectif du mois : 5 000 DHS</p>
+              </div>
+            </motion.div>
+          </div>
+
+          {/* Right Column: Main Info and Form */}
+          <div className="lg:col-span-8 flex flex-col gap-6">
+            
+            {/* Horizontal Stats Row */}
+            <div className="grid grid-cols-3 gap-6">
+               {[
+                 { label: 'Talents', val: '0', icon: Briefcase, col: 'blue' },
+                 { label: 'Note', val: '4.8', icon: Star, col: 'amber' },
+                 { label: 'Projets', val: '0', icon: Calendar, col: 'teal' }
+               ].map((s, i) => (
+                 <motion.div
+                   key={i}
+                   initial={{ opacity: 0, x: 20 }}
+                   animate={{ opacity: 1, x: 0 }}
+                   transition={{ delay: i * 0.1 }}
+                   className="bg-white p-6 rounded-[28px] border border-slate-100 shadow-xl shadow-slate-200/40 flex items-center gap-4"
+                 >
+                   <div className={`w-12 h-12 rounded-2xl flex items-center justify-center bg-${s.col}-50 text-${s.col}-500`}>
+                     <s.icon className="w-6 h-6" />
+                   </div>
+                   <div>
+                     <p className="text-2xl font-black text-slate-900 leading-none">{s.val}</p>
+                     <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">{s.label}</p>
+                   </div>
+                 </motion.div>
+               ))}
             </div>
 
-            {!isEditing ? (
-              <>
-                {/* View Mode */}
-                <div className="space-y-6 mb-8">
-                  {formData.bio && (
-                    <div>
-                      <label className="block text-xs font-black uppercase tracking-wider text-gray-500 mb-2">Bio</label>
-                      <p className="text-gray-700">{formData.bio}</p>
-                    </div>
-                  )}
-                  {formData.phone && (
-                    <div>
-                      <label className="block text-xs font-black uppercase tracking-wider text-gray-500 mb-2">Téléphone</label>
-                      <p className="text-gray-700">{formData.phone}</p>
-                    </div>
-                  )}
-                  {formData.location && (
-                    <div>
-                      <label className="block text-xs font-black uppercase tracking-wider text-gray-500 mb-2">Localisation</label>
-                      <p className="text-gray-700">{formData.location}</p>
-                    </div>
-                  )}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+              className="bg-white rounded-[40px] p-10 shadow-xl shadow-slate-200/50 border border-slate-100 flex-grow"
+            >
+              <div className="flex items-center justify-between mb-10 pb-6 border-b border-slate-100">
+                <div>
+                  <h3 className="text-2xl font-black text-slate-900">Informations Professionnelles</h3>
+                  <p className="text-slate-500 font-medium">Gérez votre identité et votre bio publique</p>
                 </div>
-
-                <div className="flex gap-4">
+                {!isEditing && (
                   <button
                     onClick={() => setIsEditing(true)}
-                    className="flex-1 px-6 py-4 bg-primary text-white rounded-2xl font-bold uppercase tracking-wider text-sm hover:bg-primary/90 transition-all flex items-center justify-center gap-2 shadow-lg"
+                    className="px-6 py-3 bg-slate-900 text-white rounded-2xl font-bold uppercase tracking-wider text-xs hover:bg-slate-800 transition-all flex items-center gap-2"
                   >
-                    <Edit2 className="w-5 h-5" />
-                    Modifier le Profil
+                    <Edit2 className="w-4 h-4" />
+                    Éditer
                   </button>
-                  <button
-                    onClick={handleLogout}
-                    className="px-6 py-4 bg-red-50 text-red-500 rounded-2xl font-bold uppercase tracking-wider text-sm hover:bg-red-100 transition-all flex items-center justify-center gap-2"
-                  >
-                    <LogOut className="w-5 h-5" />
-                  </button>
-                </div>
-              </>
-            ) : (
-              <>
-                {/* Edit Mode */}
-                <form onSubmit={handleSubmit} className="space-y-6">
-                  <div>
-                    <label className="block text-xs font-black uppercase tracking-wider text-gray-600 mb-2">Nom Complet</label>
-                    <input
-                      required
-                      value={formData.displayName}
-                      onChange={e => setFormData({...formData, displayName: e.target.value})}
-                      className="w-full px-6 py-4 bg-gray-50 border border-gray-200 rounded-2xl font-bold text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all"
-                    />
+                )}
+              </div>
+
+              {!isEditing ? (
+                 <div className="space-y-10">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+                      {[
+                        { label: 'Localisation', val: formData.location || 'Non renseignée', icon: MapPin },
+                        { label: 'Téléphone', val: formData.phone || 'Non renseigné', icon: Phone },
+                      ].map((item, i) => (
+                        <div key={i} className="flex gap-4">
+                          <div className="w-12 h-12 rounded-2xl bg-slate-50 flex items-center justify-center text-slate-400">
+                            <item.icon className="w-5 h-5" />
+                          </div>
+                          <div>
+                            <p className="text-[10px] font-black uppercase text-slate-400 tracking-wider mb-1">{item.label}</p>
+                            <p className="text-slate-900 font-bold">{item.val}</p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+
+                    <div>
+                       <p className="text-[10px] font-black uppercase text-slate-400 tracking-wider mb-3">Bio & Présentation</p>
+                       <p className="text-slate-600 leading-relaxed font-medium bg-slate-50/50 p-6 rounded-3xl border border-slate-100 italic">
+                         "{formData.bio || "Aucune bio enregistrée pour le moment. Cliquez sur éditer pour vous présenter à la communauté."}"
+                       </p>
+                    </div>
+                 </div>
+              ) : (
+                <form onSubmit={handleSubmit} className="space-y-8">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div className="space-y-2">
+                       <label className="text-[10px] font-black uppercase text-slate-400 tracking-wider flex items-center gap-2 ml-2">
+                         <User className="w-3 h-3" /> Nom Complet
+                       </label>
+                       <input
+                        required
+                        value={formData.displayName}
+                        onChange={e => setFormData({...formData, displayName: e.target.value})}
+                        className="w-full px-6 py-4 bg-slate-50 border border-slate-100 rounded-3xl font-bold text-slate-700 focus:outline-none focus:ring-4 focus:ring-primary/10 focus:border-primary transition-all"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                       <label className="text-[10px] font-black uppercase text-slate-400 tracking-wider flex items-center gap-2 ml-2">
+                         <Phone className="w-3 h-3" /> Téléphone
+                       </label>
+                       <input
+                        value={formData.phone}
+                        onChange={e => setFormData({...formData, phone: e.target.value})}
+                        placeholder="+212 6XX XXX XXX"
+                        className="w-full px-6 py-4 bg-slate-50 border border-slate-100 rounded-3xl font-bold text-slate-700 focus:outline-none focus:ring-4 focus:ring-primary/10 focus:border-primary transition-all"
+                      />
+                    </div>
                   </div>
 
-                  <div>
-                    <label className="block text-xs font-black uppercase tracking-wider text-gray-600 mb-2">Bio</label>
-                    <textarea
-                      value={formData.bio}
-                      onChange={e => setFormData({...formData, bio: e.target.value})}
-                      placeholder="Parlez un peu de vous..."
-                      className="w-full px-6 py-4 bg-gray-50 border border-gray-200 rounded-2xl font-bold text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all resize-none min-h-[120px]"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-black uppercase tracking-wider text-gray-600 mb-2">Téléphone</label>
-                    <input
-                      type="tel"
-                      value={formData.phone}
-                      onChange={e => setFormData({...formData, phone: e.target.value})}
-                      placeholder="+212 6XX XXX XXX"
-                      className="w-full px-6 py-4 bg-gray-50 border border-gray-200 rounded-2xl font-bold text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-black uppercase tracking-wider text-gray-600 mb-2">Localisation</label>
-                    <input
+                  <div className="space-y-2">
+                     <label className="text-[10px] font-black uppercase text-slate-400 tracking-wider flex items-center gap-2 ml-2">
+                       <MapPin className="w-3 h-3" /> Localisation
+                     </label>
+                     <input
                       value={formData.location}
                       onChange={e => setFormData({...formData, location: e.target.value})}
-                      placeholder="Ex: Casablanca, Maroc"
-                      className="w-full px-6 py-4 bg-gray-50 border border-gray-200 rounded-2xl font-bold text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all"
+                      placeholder="Casablanca, Maroc"
+                      className="w-full px-6 py-4 bg-slate-50 border border-slate-100 rounded-3xl font-bold text-slate-700 focus:outline-none focus:ring-4 focus:ring-primary/10 focus:border-primary transition-all"
                     />
                   </div>
 
-                  <div className="flex gap-4 pt-4">
+                  <div className="space-y-2">
+                     <label className="text-[10px] font-black uppercase text-slate-400 tracking-wider flex items-center gap-2 ml-2">
+                       <Edit2 className="w-3 h-3" /> Bio
+                     </label>
+                     <textarea
+                      value={formData.bio}
+                      onChange={e => setFormData({...formData, bio: e.target.value})}
+                      className="w-full px-6 py-4 bg-slate-50 border border-slate-100 rounded-3xl font-bold text-slate-700 focus:outline-none focus:ring-4 focus:ring-primary/10 focus:border-primary transition-all resize-none min-h-[150px]"
+                    />
+                  </div>
+
+                  <div className="flex gap-4 pt-6">
                     <button
                       type="button"
                       onClick={() => setIsEditing(false)}
-                      className="flex-1 px-6 py-4 bg-gray-100 text-gray-900 rounded-2xl font-bold uppercase tracking-wider text-sm hover:bg-gray-200 transition-all flex items-center justify-center gap-2"
+                      className="flex-1 px-8 py-5 bg-slate-100 text-slate-700 rounded-[24px] font-black uppercase tracking-wider text-xs hover:bg-slate-200 transition-all flex items-center justify-center gap-2"
                     >
-                      <X className="w-5 h-5" />
-                      Annuler
+                      <X className="w-5 h-5" /> Annuler
                     </button>
                     <button
                       type="submit"
-                      className="flex-1 px-6 py-4 bg-primary text-white rounded-2xl font-bold uppercase tracking-wider text-sm hover:bg-primary/90 transition-all flex items-center justify-center gap-2 shadow-lg"
+                      className="flex-3 px-8 py-5 bg-primary text-white rounded-[24px] font-black uppercase tracking-wider text-xs hover:bg-primary/90 transition-all flex items-center justify-center gap-2 shadow-2xl shadow-primary/40"
                     >
-                      <Save className="w-5 h-5" />
-                      Enregistrer
+                      <Save className="w-5 h-5" /> Enregistrer les modifications
                     </button>
                   </div>
                 </form>
-              </>
-            )}
+              )}
+            </motion.div>
           </div>
-        </motion.div>
 
-        {/* Stats */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          className="mt-12 grid grid-cols-3 gap-6"
-        >
-          <div className="bg-white rounded-2xl p-6 text-center shadow-lg">
-            <div className="text-3xl font-black text-primary mb-2">0</div>
-            <p className="text-xs font-bold text-gray-500 uppercase tracking-wider">Talents</p>
-          </div>
-          <div className="bg-white rounded-2xl p-6 text-center shadow-lg">
-            <div className="text-3xl font-black text-green-500 mb-2">0 DHS</div>
-            <p className="text-xs font-bold text-gray-500 uppercase tracking-wider">Revenus</p>
-          </div>
-          <div className="bg-white rounded-2xl p-6 text-center shadow-lg">
-            <div className="text-3xl font-black text-purple-500 mb-2">4.8</div>
-            <p className="text-xs font-bold text-gray-500 uppercase tracking-wider">Note</p>
-          </div>
-        </motion.div>
+        </div>
       </div>
     </div>
   );

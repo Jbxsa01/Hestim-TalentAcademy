@@ -14,6 +14,7 @@ export interface Talent {
   id: string;
   trainerId: string;
   trainerName: string;
+  trainerPhotoURL?: string;
   title: string;
   description: string;
   category: string;
