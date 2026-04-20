@@ -9,6 +9,7 @@ app.use(cors());
 app.use(express.json());
 
 const firebaseApp = initializeApp(firebaseConfig);
+// Use default database (don't specify firestoreDatabaseId)
 const db = getFirestore(firebaseApp);
 
 const sampleTalents = [
@@ -250,7 +251,7 @@ app.post('/api/seed-50talents', async (req, res) => {
 
 const PORT = process.env.API_PORT || 3001;
 app.listen(PORT, () => {
-  console.log(`🚀 API Server running on http://localhost:${PORT}`);
+  console.log(`\n🚀 API Server running on http://localhost:${PORT}`);
   console.log(`  POST http://localhost:${PORT}/api/seed-talents`);
-  console.log(`  POST http://localhost:${PORT}/api/seed-50talents`);
+  console.log(`  POST http://localhost:${PORT}/api/seed-50talents\n`);
 });
